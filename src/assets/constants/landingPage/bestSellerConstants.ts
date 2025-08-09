@@ -76,3 +76,12 @@ export const BEST_SELLERS: BestSellerItem[] = [
   },
 ];
 
+export const BEST_SELLER_STRINGS = {
+  SECTION_TITLE: "Best Sellers",
+  VIEW_ALL: "View all",
+  VIEW_ALL_ARIA_LABEL: "View all best sellers",
+  HOT_SELLING_BADGE: "Hot selling",
+  REVIEWS_SUFFIX: "+ Reviews",
+  ADD_TO_CART: "ADD TO CART"
+} as const;
+

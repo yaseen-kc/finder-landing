@@ -3,6 +3,7 @@ import {
   HERO_SLIDES,
   type HeroSlide,
   AUTO_INTERVAL_MS,
+  HERO_ARIA,
 } from "../../constants/landingPage/heroConstants";
 
 export default function HeroSection() {
@@ -111,7 +112,7 @@ export default function HeroSection() {
       className="relative w-full h-[75vh] md:h-[88vh] lg:h-[96vh] overflow-hidden bg-neutral-900 text-white"
       role="region"
       aria-roledescription="carousel"
-      aria-label="Hero image carousel"
+      aria-label={HERO_ARIA.REGION_LABEL}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       onMouseEnter={() => setIsPaused(true)}
@@ -188,7 +189,7 @@ export default function HeroSection() {
             type="button"
             onClick={goPrev}
             className="hidden md:inline-flex group absolute left-3 top-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus-visible:bg-black/60 ring-1 ring-white/30 hover:ring-white/50 focus:outline-none w-10 h-10 md:w-11 md:h-11 transition"
-            aria-label="Previous slide"
+            aria-label={HERO_ARIA.PREV}
           >
             <svg
               className="w-5 h-5 text-white group-hover:scale-110 transition-transform"
@@ -210,7 +211,7 @@ export default function HeroSection() {
             type="button"
             onClick={goNext}
             className="hidden md:inline-flex group absolute right-3 top-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-black/40 hover:bg-black/60 focus-visible:bg-black/60 ring-1 ring-white/30 hover:ring-white/50 focus:outline-none w-10 h-10 md:w-11 md:h-11 transition"
-            aria-label="Next slide"
+            aria-label={HERO_ARIA.NEXT}
           >
             <svg
               className="w-5 h-5 text-white group-hover:scale-110 transition-transform"
@@ -246,7 +247,7 @@ export default function HeroSection() {
                     ? "w-3.5 h-3.5 bg-white"
                     : "w-2.5 h-2.5 bg-white/60 hover:bg-white/80")
                 }
-                aria-label={`Go to slide ${index + 1}`}
+                aria-label={HERO_ARIA.GO_TO_SLIDE(index + 1)}
                 aria-current={isActive ? "true" : undefined}
                 onClick={() => goTo(index)}
               />

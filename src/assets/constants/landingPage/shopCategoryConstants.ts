@@ -62,3 +62,7 @@ export const SHOP_CATEGORIES: ShopCategory[] = [
     // },
 ];
 
+export const SHOP_CATEGORY_STRINGS = {
+    SECTION_TITLE: "Shop by Category",
+} as const;
+

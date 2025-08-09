@@ -12,6 +12,12 @@ export const COMPANY_NAME = "Finder Sports";
 export const COMPANY_TAGLINE =
   "Comfort engineered for everyday performance.";
 
+// Footer logo copy used by the footer component
+export const FOOTER_LOGO = {
+  PRIMARY: "Finder",
+  SECONDARY: "Sports",
+} as const;
+
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
     title: "Shop",

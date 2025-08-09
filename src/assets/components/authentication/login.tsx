@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LOGIN_COPY } from "../../constants/authentication/loginConstant";
+import { LOGIN_COPY, LOGIN_VALIDATION } from "../../constants/authentication/loginConstant";
 
 type FormState = {
   email: string;
@@ -12,16 +12,16 @@ type FormErrors = Partial<Record<keyof FormState, string>>;
 function validate(state: FormState): FormErrors {
   const errors: FormErrors = {};
   if (!state.email.trim()) {
-    errors.email = "Email is required";
+    errors.email = LOGIN_VALIDATION.EMAIL_REQUIRED;
   } else {
     const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(state.email)) errors.email = "Enter a valid email";
+    if (!emailPattern.test(state.email)) errors.email = LOGIN_VALIDATION.EMAIL_INVALID;
   }
 
   if (!state.password) {
-    errors.password = "Password is required";
+    errors.password = LOGIN_VALIDATION.PASSWORD_REQUIRED;
   } else if (state.password.length < 8) {
-    errors.password = "Minimum 8 characters";
+    errors.password = LOGIN_VALIDATION.PASSWORD_MIN_LENGTH;
   }
   return errors;
 }

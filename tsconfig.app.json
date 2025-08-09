@@ -21,7 +21,14 @@
     "noUnusedParameters": true,
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",
+    "paths": {
+      "@productDetail/*": ["src/assets/components/productDetail/*"],
+      "@productDetailConstant": [
+        "src/assets/constants/productDetail/productDetailConstant.ts"
+      ]
+    }
   },
   "include": ["src"]
 }

@@ -29,3 +29,7 @@ export const SHOP_CONCERNS: ShopConcern[] = [
   },
 ];
 
+export const SHOP_CONCERN_STRINGS = {
+  SECTION_TITLE: "Shop By Concern",
+} as const;
+

@@ -18,3 +18,10 @@ export const LOGIN_COPY = {
 } as const;
 
 export type LoginCopy = typeof LOGIN_COPY;
+
+export const LOGIN_VALIDATION = {
+  EMAIL_REQUIRED: "Email is required",
+  EMAIL_INVALID: "Enter a valid email",
+  PASSWORD_REQUIRED: "Password is required",
+  PASSWORD_MIN_LENGTH: "Minimum 8 characters",
+} as const;

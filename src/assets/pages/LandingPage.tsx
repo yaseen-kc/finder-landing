@@ -1,4 +1,5 @@
 import HeaderNav from "../components/navigationBar/headerNav";
+import MobileBottomNav from "../components/navigationBar/mobileBottomNav";
 import HeroSection from "../components/landingPage/heroSection";
 import ShopCategory from "../components/landingPage/shopCategory";
 import BestSeller from "../components/landingPage/bestSeller";
@@ -8,7 +9,7 @@ import FooterNav from "../components/navigationBar/footerNav";
 
 export default function LandingPage() {
   return (
-    <div>
+    <div className="pb-20 lg:pb-0">
       <HeaderNav />
       <HeroSection />
       <ShopCategory />
@@ -16,6 +17,7 @@ export default function LandingPage() {
       <ShopConcern />
       <UserReview />
       <FooterNav />
+      <MobileBottomNav />
     </div>
   );
 }

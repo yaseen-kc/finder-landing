@@ -44,3 +44,10 @@ export const HERO_SLIDES: HeroSlide[] = [
 ];
 
 export const AUTO_INTERVAL_MS = 5000;
+
+export const HERO_ARIA = {
+  REGION_LABEL: "Hero image carousel",
+  PREV: "Previous slide",
+  NEXT: "Next slide",
+  GO_TO_SLIDE: (index: number) => `Go to slide ${index}`,
+} as const;

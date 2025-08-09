@@ -1,4 +1,4 @@
-import { SHOP_CONCERNS, type ShopConcern as Concern } from "../../constants/landingPage/shopConcernConstants";
+import { SHOP_CONCERNS, SHOP_CONCERN_STRINGS, type ShopConcern as Concern } from "../../constants/landingPage/shopConcernConstants";
 
 export default function ShopConcern() {
   const concerns: Concern[] = SHOP_CONCERNS;
@@ -6,7 +6,7 @@ export default function ShopConcern() {
   return (
     <section className="mx-auto max-w-screen-2xl px-4 py-10">
       <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
-        Shop By Concern
+        {SHOP_CONCERN_STRINGS.SECTION_TITLE}
       </h3>
 
       <div className="mt-6">

@@ -11,6 +11,9 @@ import {
 import {
   NAV_CATEGORIES,
   MOBILE_LEFT_RAIL_ITEMS,
+  HEADER_NAV_LABELS,
+  HEADER_STRINGS,
+  HEADER_ARIA,
   type Category,
 } from "../../constants/navigationBar/headerConstants";
 
@@ -19,9 +22,9 @@ function Logo() {
   return (
     <div className="font-semibold text-2xl tracking-tight select-none">
       <span className="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
-        Finder
+        {HEADER_STRINGS.LOGO_PRIMARY}
       </span>{" "}
-      <span className="text-zinc-900">Sports</span>
+      <span className="text-zinc-900">{HEADER_STRINGS.LOGO_SECONDARY}</span>
     </div>
   );
 }
@@ -91,7 +94,7 @@ export default function HeaderNav() {
           <div className="flex items-center gap-3">
             {/* Mobile menu button (hamburger) */}
             <button
-              aria-label="Open menu"
+              aria-label={HEADER_ARIA.OPEN_MENU}
               className="lg:hidden p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
               onClick={() => setMobileOpen(true)}
             >
@@ -108,7 +111,7 @@ export default function HeaderNav() {
               data-active={activeMenu === "categories"}
               onClick={() => toggleMenu("categories")}
             >
-              <span>Categories</span>
+              <span>{HEADER_NAV_LABELS.CATEGORIES}</span>
               <ChevronDownIcon className="w-4 h-4" />
               <span
                 aria-hidden
@@ -117,7 +120,7 @@ export default function HeaderNav() {
             </button>
             {/* Combos link */}
             <a className={`${navLinkBase} relative group`} href="#">
-              Combos
+              {HEADER_NAV_LABELS.COMBOS}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100"
@@ -129,7 +132,7 @@ export default function HeaderNav() {
               data-active={activeMenu === "bestsellers"}
               onClick={() => toggleMenu("bestsellers")}
             >
-              <span>Bestsellers</span>
+              <span>{HEADER_NAV_LABELS.BESTSELLERS}</span>
               <ChevronDownIcon className="w-4 h-4" />
               <span
                 aria-hidden
@@ -138,7 +141,7 @@ export default function HeaderNav() {
             </button>
             {/* New Launches link */}
             <a className={`${navLinkBase} relative group`} href="#">
-              New Launches
+              {HEADER_NAV_LABELS.NEW_LAUNCHES}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100"
@@ -150,7 +153,7 @@ export default function HeaderNav() {
               data-active={activeMenu === "usecase"}
               onClick={() => toggleMenu("usecase")}
             >
-              <span>Shop By Usecase</span>
+              <span>{HEADER_NAV_LABELS.SHOP_BY_USECASE}</span>
               <ChevronDownIcon className="w-4 h-4" />
               <span
                 aria-hidden
@@ -163,7 +166,7 @@ export default function HeaderNav() {
               data-active={activeMenu === "more"}
               onClick={() => toggleMenu("more")}
             >
-              <span>More</span>
+              <span>{HEADER_NAV_LABELS.MORE}</span>
               <ChevronDownIcon className="w-4 h-4" />
               <span
                 aria-hidden
@@ -176,7 +179,7 @@ export default function HeaderNav() {
               data-active={activeMenu === "help"}
               onClick={() => toggleMenu("help")}
             >
-              <span>Help</span>
+              <span>{HEADER_NAV_LABELS.HELP}</span>
               <ChevronDownIcon className="w-4 h-4" />
               <span
                 aria-hidden
@@ -189,19 +192,19 @@ export default function HeaderNav() {
           <div className="flex items-center gap-3">
             <button
               className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
-              aria-label="Search"
+              aria-label={HEADER_ARIA.SEARCH}
             >
               <MagnifyingGlassIcon className="w-6 h-6" />
             </button>
             <button
               className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
-              aria-label="Account"
+              aria-label={HEADER_ARIA.ACCOUNT}
             >
               <UserIcon className="w-6 h-6" />
             </button>
             <button
               className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
-              aria-label="Cart"
+              aria-label={HEADER_ARIA.CART}
             >
               <ShoppingBagIcon className="w-6 h-6" />
             </button>
@@ -221,7 +224,7 @@ export default function HeaderNav() {
               <button
                 className="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white/90 backdrop-blur shadow-sm h-10 w-10 hover:bg-zinc-50"
                 onClick={() => scrollCategories("left")}
-                aria-label="Scroll left"
+                aria-label={HEADER_ARIA.SCROLL_LEFT}
               >
                 <ChevronLeftIcon className="w-5 h-5" />
               </button>
@@ -231,7 +234,7 @@ export default function HeaderNav() {
               <button
                 className="inline-flex items-center justify-center rounded-full border border-zinc-200 bg-white/90 backdrop-blur shadow-sm h-10 w-10 hover:bg-zinc-50"
                 onClick={() => scrollCategories("right")}
-                aria-label="Scroll right"
+                aria-label={HEADER_ARIA.SCROLL_RIGHT}
               >
                 <ChevronRightIcon className="w-5 h-5" />
               </button>
@@ -275,7 +278,9 @@ export default function HeaderNav() {
         >
           <div className="mx-auto max-w-screen-2xl px-4 py-6">
             <div className="text-sm text-zinc-600">
-              This is a placeholder for the “{activeMenu}” menu.
+              {HEADER_STRINGS.PLACEHOLDER_PREFIX}
+              {activeMenu}
+              {HEADER_STRINGS.PLACEHOLDER_SUFFIX}
             </div>
           </div>
         </div>
@@ -296,15 +301,16 @@ export default function HeaderNav() {
         />
         {/* Drawer panel */}
         <div
-          className={`absolute inset-y-0 left-0 w-[88%] max-w-sm bg-white/95 backdrop-blur rounded-r-2xl shadow-2xl ring-1 ring-zinc-900/5 transition-transform ${
+          className={`absolute inset-y-0 left-0 w-[88%] max-w-sm bg-white rounded-r-2xl shadow-2xl ring-1 ring-zinc-900/5 transition-transform ${
             mobileOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex items-center justify-between p-4 border-b border-zinc-100">
+          <div className="flex items-center justify-between p-4 border-b bg-white border-zinc-100">
             <Logo />
             {/* Close drawer button */}
             <button
               className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
+              aria-label={HEADER_ARIA.CLOSE_MENU}
               onClick={() => setMobileOpen(false)}
             >
               <ChevronLeftIcon className="w-5 h-5" />
@@ -312,7 +318,7 @@ export default function HeaderNav() {
           </div>
 
           {/* Mobile categories grid with left rail */}
-          <div className="flex">
+          <div className="flex bg-white rounded-md">
             {/* Left rail navigation */}
             <div className="w-24 border-r border-zinc-200 py-3">
               {MOBILE_LEFT_RAIL_ITEMS.map((label) => (

@@ -15,4 +15,9 @@ export const USER_REVIEWS: UserReview[] = [
     },
 ];
 
+export const USER_REVIEW_STRINGS = {
+  QUOTE_MARK: "“",
+  AUTHOR_PREFIX: "~ ",
+} as const;
+
 

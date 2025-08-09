@@ -4,6 +4,7 @@ import {
   FOOTER_SECTIONS,
   FOOTER_BOTTOM_LINKS,
   COPYRIGHT_YEAR,
+  FOOTER_LOGO,
   type FooterSection,
 } from "../../constants/navigationBar/footerConstants";
 
@@ -11,9 +12,9 @@ function Logo() {
   return (
     <div className="font-semibold text-2xl tracking-tight select-none">
       <span className="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
-        Finder
+        {FOOTER_LOGO.PRIMARY}
       </span>{" "}
-      <span className="text-zinc-100">Sports</span>
+      <span className="text-zinc-100">{FOOTER_LOGO.SECONDARY}</span>
     </div>
   );
 }

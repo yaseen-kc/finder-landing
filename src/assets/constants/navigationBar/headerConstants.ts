@@ -78,3 +78,31 @@ export const MOBILE_LEFT_RAIL_ITEMS: string[] = [
   "More",
 ];
 
+// Header navigation labels and copy used by the header component
+export const HEADER_NAV_LABELS = {
+  CATEGORIES: "Categories",
+  COMBOS: "Combos",
+  BESTSELLERS: "Bestsellers",
+  NEW_LAUNCHES: "New Launches",
+  SHOP_BY_USECASE: "Shop By Usecase",
+  MORE: "More",
+  HELP: "Help",
+} as const;
+
+export const HEADER_STRINGS = {
+  PLACEHOLDER_PREFIX: "This is a placeholder for the “",
+  PLACEHOLDER_SUFFIX: "” menu.",
+  LOGO_PRIMARY: "Finder",
+  LOGO_SECONDARY: "Sports",
+} as const;
+
+export const HEADER_ARIA = {
+  OPEN_MENU: "Open menu",
+  CLOSE_MENU: "Close menu",
+  SEARCH: "Search",
+  ACCOUNT: "Account",
+  CART: "Cart",
+  SCROLL_LEFT: "Scroll left",
+  SCROLL_RIGHT: "Scroll right",
+} as const;
+

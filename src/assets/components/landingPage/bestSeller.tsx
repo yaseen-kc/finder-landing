@@ -1,5 +1,6 @@
 import {
   BEST_SELLERS,
+  BEST_SELLER_STRINGS,
   type BestSellerItem,
 } from "../../constants/landingPage/bestSellerConstants";
 
@@ -18,14 +19,14 @@ export default function BestSeller() {
     <section className="mx-auto max-w-screen-2xl px-4 py-12">
       <div className="flex items-center justify-between">
         <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
-          Best Sellers
+          {BEST_SELLER_STRINGS.SECTION_TITLE}
         </h3>
         <a
           href="#"
           className="text-sm md:text-base font-medium text-zinc-900 inline-flex items-center gap-1 hover:opacity-80"
-          aria-label="View all best sellers"
+          aria-label={BEST_SELLER_STRINGS.VIEW_ALL_ARIA_LABEL}
         >
-          View all
+          {BEST_SELLER_STRINGS.VIEW_ALL}
           <svg
             className="w-4 h-4"
             viewBox="0 0 24 24"
@@ -57,7 +58,7 @@ export default function BestSeller() {
             <div className="relative">
               {item.isHotSelling && (
                 <span className="absolute left-3 top-3 z-[1] rounded-md bg-black/80 text-white text-xs font-semibold px-2 py-1">
-                  Hot selling
+                  {BEST_SELLER_STRINGS.HOT_SELLING_BADGE}
                 </span>
               )}
               <img
@@ -85,7 +86,10 @@ export default function BestSeller() {
                   <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.88 8.72c-.783-.57-.38-1.81.588-1.81H6.93a1 1 0 00.95-.69l1.07-3.292z" />
                 </svg>
                 <span className="font-semibold">{item.rating.toFixed(2)}</span>
-                <span className="text-zinc-500">({item.reviewCount}+ Reviews)</span>
+                <span className="text-zinc-500">
+                  ({item.reviewCount}
+                  {BEST_SELLER_STRINGS.REVIEWS_SUFFIX})
+                </span>
               </div>
 
               {/* Price */}
@@ -107,7 +111,7 @@ export default function BestSeller() {
                 type="button"
                 className="mt-4 w-full rounded-xl bg-amber-400 hover:bg-amber-500 text-zinc-900 font-semibold py-3 transition-colors"
               >
-                ADD TO CART
+                {BEST_SELLER_STRINGS.ADD_TO_CART}
               </button>
             </div>
           </article>
