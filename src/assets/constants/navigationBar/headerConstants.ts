@@ -5,6 +5,12 @@ export type Category = {
   image?: string;
 };
 
+export type PopularSearch = {
+  id: string;
+  label: string;
+  image: string;
+};
+
 export const NAV_CATEGORIES: Category[] = [
   {
     id: "cushions",
@@ -105,4 +111,31 @@ export const HEADER_ARIA = {
   SCROLL_LEFT: "Scroll left",
   SCROLL_RIGHT: "Scroll right",
 } as const;
+
+export const SEARCH_LABELS = {
+  PLACEHOLDER: "Search for a product",
+  POPULAR_TITLE: "Popular Searches",
+} as const;
+
+export const POPULAR_SEARCHES: PopularSearch[] = [
+  {
+    id: "cushions",
+    label: "Cushions",
+    image:
+      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=96&h=96&fit=crop&auto=format&q=60",
+  },
+  {
+    id: "pillows",
+    label: "Pillows",
+    image:
+      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=96&h=96&fit=crop&auto=format&q=60",
+  },
+  {
+    id: "insoles",
+    label: "Insoles",
+    image:
+      "https://images.unsplash.com/photo-1620374649118-8a2d6d0e7962?w=96&h=96&fit=crop&auto=format&q=60",
+  },
+];
+
 

@@ -23,7 +23,7 @@ export default function FooterNav() {
   const sections: FooterSection[] = FOOTER_SECTIONS;
 
   return (
-    <footer className="border-t border-zinc-800 bg-zinc-900">
+    <footer className="mt-16 border-t border-zinc-800 bg-zinc-900">
       <div className="mx-auto max-w-screen-2xl px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
           {/* Brand */}

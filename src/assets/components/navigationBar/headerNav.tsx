@@ -1,9 +1,12 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   Bars3Icon,
   ChevronDownIcon,
+  ChevronUpIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
+  ArrowTrendingUpIcon,
   MagnifyingGlassIcon,
   ShoppingBagIcon,
   UserIcon,
@@ -15,17 +18,27 @@ import {
   HEADER_STRINGS,
   HEADER_ARIA,
   type Category,
+  SEARCH_LABELS,
+  POPULAR_SEARCHES,
+  type PopularSearch,
 } from "../../constants/navigationBar/headerConstants";
+import DefaultCart from "../cart/defaultCart";
+import { DEFAULT_CART_ITEMS, type CartItem } from "@cartConstants";
+
 
 // Logo component for the navigation bar
 function Logo() {
   return (
-    <div className="font-semibold text-2xl tracking-tight select-none">
+    <Link
+      to="/"
+      aria-label="Go to home"
+      className="font-semibold text-2xl tracking-tight select-none"
+   >
       <span className="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
         {HEADER_STRINGS.LOGO_PRIMARY}
       </span>{" "}
       <span className="text-zinc-900">{HEADER_STRINGS.LOGO_SECONDARY}</span>
-    </div>
+    </Link>
   );
 }
 
@@ -49,21 +62,56 @@ function useOutsideClick<T extends HTMLElement>(handler: () => void) {
 export default function HeaderNav() {
   const [activeMenu, setActiveMenu] = useState<string | null>(null); // Tracks which dropdown is open
   const [mobileOpen, setMobileOpen] = useState(false); // Tracks mobile drawer state
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [cartOpen, setCartOpen] = useState(false);
+
+  type CartLineItem = CartItem & { qty: number };
+  const [cartItems, setCartItems] = useState<CartLineItem[]>(
+    DEFAULT_CART_ITEMS.map((i) => ({ ...i, qty: 1 }))
+  );
 
   const categories: Category[] = NAV_CATEGORIES;
 
   const dropdownRef = useOutsideClick<HTMLDivElement>(() =>
     setActiveMenu(null)
   );
+  const searchDropdownRef = useOutsideClick<HTMLDivElement>(() =>
+    setSearchOpen(false)
+  );
   const scrollerRef = useRef<HTMLDivElement | null>(null);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Close dropdown on Escape key
+  // Close dropdown/search on Escape key
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setActiveMenu(null);
+      if (e.key === "Escape") {
+        setActiveMenu(null);
+        setSearchOpen(false);
+      }
+      if (e.key === "Escape") {
+        setActiveMenu(null);
+        setSearchOpen(false);
+      }
     }
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  // Focus input when opening search
+  useEffect(() => {
+    if (searchOpen) {
+      setTimeout(() => searchInputRef.current?.focus(), 0);
+    }
+  }, [searchOpen]);
+
+  // Listen for global request to open cart (from floating panel's View Cart)
+  useEffect(() => {
+    function handleOpenCart() {
+      setCartOpen(true);
+    }
+    window.addEventListener("open-cart", handleOpenCart as EventListener);
+    return () => window.removeEventListener("open-cart", handleOpenCart as EventListener);
   }, []);
 
   // Toggle dropdown menus
@@ -82,12 +130,43 @@ export default function HeaderNav() {
     });
   }
 
+  // Cart helpers
+  function updateQty(id: string, delta: number) {
+    setCartItems((prev) =>
+      prev
+        .map((li) =>
+          li.id === id ? { ...li, qty: Math.max(0, li.qty + delta) } : li
+        )
+        .filter((li) => li.qty > 0)
+    );
+  }
+
+  // Announce open/close of cart so floating panel can react
+  useEffect(() => {
+    if (cartOpen) {
+      window.dispatchEvent(new CustomEvent("open-cart"));
+    } else {
+      window.dispatchEvent(new CustomEvent("close-cart"));
+    }
+  }, [cartOpen]);
+
+  // Broadcast cart items whenever they change so floating panel can sync
+  useEffect(() => {
+    window.dispatchEvent(
+      new CustomEvent("cart-items-changed", {
+        detail: { items: cartItems },
+      })
+    );
+  }, [cartItems]);
+
   // Base styles for nav links
   const navLinkBase =
     "px-3 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 rounded-md transition-colors inline-flex items-center gap-1 data-[active=true]:text-zinc-900";
 
+  const totalCartQty = cartItems.reduce((sum, li) => sum + li.qty, 0);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white/70 backdrop-blur supports-[backdrop-filter]:bg-white/60">
+    <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white supports-[backdrop-filter]:bg-white">
       <div className="mx-auto max-w-screen-2xl px-4">
         {/* Top navigation row */}
         <div className="flex h-16 items-center justify-between">
@@ -109,10 +188,15 @@ export default function HeaderNav() {
             <button
               className={`${navLinkBase} relative group`}
               data-active={activeMenu === "categories"}
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => toggleMenu("categories")}
             >
               <span>{HEADER_NAV_LABELS.CATEGORIES}</span>
-              <ChevronDownIcon className="w-4 h-4" />
+              {activeMenu === "categories" ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
@@ -130,10 +214,15 @@ export default function HeaderNav() {
             <button
               className={`${navLinkBase} relative group`}
               data-active={activeMenu === "bestsellers"}
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => toggleMenu("bestsellers")}
             >
               <span>{HEADER_NAV_LABELS.BESTSELLERS}</span>
-              <ChevronDownIcon className="w-4 h-4" />
+              {activeMenu === "bestsellers" ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
@@ -151,10 +240,15 @@ export default function HeaderNav() {
             <button
               className={`${navLinkBase} relative group`}
               data-active={activeMenu === "usecase"}
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => toggleMenu("usecase")}
             >
               <span>{HEADER_NAV_LABELS.SHOP_BY_USECASE}</span>
-              <ChevronDownIcon className="w-4 h-4" />
+              {activeMenu === "usecase" ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
@@ -164,10 +258,15 @@ export default function HeaderNav() {
             <button
               className={`${navLinkBase} relative group`}
               data-active={activeMenu === "more"}
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => toggleMenu("more")}
             >
               <span>{HEADER_NAV_LABELS.MORE}</span>
-              <ChevronDownIcon className="w-4 h-4" />
+              {activeMenu === "more" ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
@@ -177,10 +276,15 @@ export default function HeaderNav() {
             <button
               className={`${navLinkBase} relative group`}
               data-active={activeMenu === "help"}
+              onMouseDown={(e) => e.stopPropagation()}
               onClick={() => toggleMenu("help")}
             >
               <span>{HEADER_NAV_LABELS.HELP}</span>
-              <ChevronDownIcon className="w-4 h-4" />
+              {activeMenu === "help" ? (
+                <ChevronUpIcon className="w-4 h-4" />
+              ) : (
+                <ChevronDownIcon className="w-4 h-4" />
+              )}
               <span
                 aria-hidden
                 className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
@@ -193,6 +297,7 @@ export default function HeaderNav() {
             <button
               className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
               aria-label={HEADER_ARIA.SEARCH}
+              onClick={() => setSearchOpen(true)}
             >
               <MagnifyingGlassIcon className="w-6 h-6" />
             </button>
@@ -203,20 +308,76 @@ export default function HeaderNav() {
               <UserIcon className="w-6 h-6" />
             </button>
             <button
-              className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
+              className="relative p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
               aria-label={HEADER_ARIA.CART}
+              onClick={() => setCartOpen(true)}
             >
               <ShoppingBagIcon className="w-6 h-6" />
+              {totalCartQty > 0 && (
+                <span
+                  aria-live="polite"
+                  className="absolute -top-1 -right-1 inline-flex items-center justify-center rounded-full bg-zinc-900 text-white text-[10px] min-w-[18px] h-[18px] px-1 leading-none"
+                >
+                  {totalCartQty}
+                </span>
+              )}
             </button>
           </div>
         </div>
       </div>
 
+      {/* Desktop search overlay */}
+      {searchOpen && (
+        <div
+          ref={searchDropdownRef}
+          className="hidden lg:block absolute inset-x-0 top-full z-40 border-t border-zinc-100 bg-white backdrop-blur supports-[backdrop-filter]:bg-white shadow-sm rounded-b-md"
+        >
+          <div className="mx-auto max-w-screen-2xl px-4 py-6">
+            <div className="rounded-md bg-zinc-100/80 ring-1 ring-zinc-200 px-4 py-3">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={SEARCH_LABELS.PLACEHOLDER}
+                className="w-full bg-transparent outline-none text-zinc-700 placeholder:text-zinc-400"
+              />
+            </div>
+            <div className="mt-6">
+              <div className="text-sm font-medium text-zinc-800">
+                {SEARCH_LABELS.POPULAR_TITLE}
+              </div>
+              <div className="mt-3 flex items-stretch gap-6">
+                {POPULAR_SEARCHES.map((item: PopularSearch) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    onClick={() => setSearchQuery(item.label)}
+                    className="group inline-flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 shadow-sm hover:bg-zinc-50"
+                  >
+                    <ArrowTrendingUpIcon className="h-4 w-4 text-zinc-400" />
+                    <img
+                      src={item.image}
+                      alt={item.label}
+                      className="h-8 w-8 rounded-xl object-cover"
+                      loading="lazy"
+                    />
+                    <span className="text-sm text-zinc-700 group-hover:text-zinc-900">
+                      {item.label}
+                    </span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Desktop dropdown for categories */}
       {activeMenu === "categories" && (
         <div
           ref={dropdownRef}
-          className="hidden lg:block absolute inset-x-0 top-full z-40 border-t border-zinc-100 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm"
+          className="hidden lg:block absolute inset-x-0 top-full z-40 border-t border-zinc-100 bg-white backdrop-blur supports-[backdrop-filter]:bg-white shadow-sm rounded-b-md"
         >
           <div className="mx-auto max-w-screen-2xl px-4 py-6 relative">
             {/* Left scroll button */}
@@ -274,13 +435,62 @@ export default function HeaderNav() {
       {activeMenu && activeMenu !== "categories" && (
         <div
           ref={dropdownRef}
-          className="hidden lg:block absolute inset-x-0 top-full z-40 border-t border-zinc-100 bg-white/80 backdrop-blur supports-[backdrop-filter]:bg-white/60 shadow-sm"
+          className="hidden lg:block absolute inset-x-0 top-full z-40 border-t border-zinc-100 bg-white backdrop-blur supports-[backdrop-filter]:bg-white shadow-sm rounded-b-md"
         >
           <div className="mx-auto max-w-screen-2xl px-4 py-6">
             <div className="text-sm text-zinc-600">
               {HEADER_STRINGS.PLACEHOLDER_PREFIX}
               {activeMenu}
               {HEADER_STRINGS.PLACEHOLDER_SUFFIX}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Mobile full-screen search */}
+      {searchOpen && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-white">
+          <div className="p-3 flex items-center gap-2">
+            <button
+              className="p-2 rounded-full border border-zinc-200"
+              aria-label="Back"
+              onClick={() => setSearchOpen(false)}
+            >
+              <ChevronLeftIcon className="w-5 h-5" />
+            </button>
+            <div className="flex-1 rounded-md bg-zinc-100/80 ring-1 ring-zinc-200 px-3 py-2">
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder={SEARCH_LABELS.PLACEHOLDER}
+                className="w-full bg-transparent outline-none text-sm text-zinc-700 placeholder:text-zinc-400"
+              />
+            </div>
+          </div>
+          <div className="px-4 bg-white pb-3 rounded-b-lg">
+            <div className="text-sm font-medium text-zinc-800">
+              {SEARCH_LABELS.POPULAR_TITLE}
+            </div>
+            <div className="mt-4 space-y-5">
+              {POPULAR_SEARCHES.map((item: PopularSearch) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() => setSearchQuery(item.label)}
+                  className="w-full flex items-center gap-4"
+                >
+                  <ArrowTrendingUpIcon className="h-4 w-4 text-zinc-400" />
+                  <img
+                    src={item.image}
+                    alt={item.label}
+                    className="h-10 w-10 rounded-xl object-cover"
+                    loading="lazy"
+                  />
+                  <span className="text-sm text-zinc-700">{item.label}</span>
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -318,7 +528,7 @@ export default function HeaderNav() {
           </div>
 
           {/* Mobile categories grid with left rail */}
-          <div className="flex bg-white rounded-md">
+          <div className="flex bg-white rounded-b-md">
             {/* Left rail navigation */}
             <div className="w-24 border-r border-zinc-200 py-3">
               {MOBILE_LEFT_RAIL_ITEMS.map((label) => (
@@ -352,6 +562,16 @@ export default function HeaderNav() {
           </div>
         </div>
       </div>
+      {/* Cart drawer */}
+      <DefaultCart
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        items={cartItems}
+        onUpdateQty={updateQty}
+        onRemoveItem={(id: string) =>
+          setCartItems((prev) => prev.filter((li) => li.id !== id))
+        }
+      />
     </header>
   );
 }

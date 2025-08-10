@@ -23,12 +23,23 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
     "baseUrl": ".",
-    "paths": {
-      "@productDetail/*": ["src/assets/components/productDetail/*"],
-      "@productDetailConstant": [
-        "src/assets/constants/productDetail/productDetailConstant.ts"
-      ]
-    }
+      "paths": {
+        "@productDetail/*": ["src/assets/components/productDetail/*"],
+        "@productDetailConstant": [
+          "src/assets/constants/productDetail/productDetailConstant.ts"
+        ],
+        "@productList/*": ["src/assets/components/productList/*"],
+        "@productListConstant": [
+          "src/assets/constants/productList/productListConstant.ts"
+        ]
+        ,
+        "@cartConstants": [
+          "src/assets/constants/cart/cartConstants.ts"
+        ],
+        "@paginationConstant": [
+          "src/assets/constants/productDetail/paginationConstant.ts"
+        ]
+      }
   },
   "include": ["src"]
 }

@@ -10,7 +10,7 @@ export default function DetailsAccordions({
   returns: string[];
 }) {
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 p-3">
       <details className="rounded-2xl border p-4" open>
         <summary className="cursor-pointer text-sm font-semibold">Description</summary>
         <div className="mt-2 space-y-2 text-sm text-gray-700">

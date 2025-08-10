@@ -9,6 +9,7 @@ import DetailsAccordions from "@productDetail/DetailsAccordions";
 import HeaderNav from "../components/navigationBar/headerNav";
 import MobileBottomNav from "../components/navigationBar/mobileBottomNav";
 import FooterNav from "../components/navigationBar/footerNav";
+import CartFloatingPanel from "../components/cart/cartFloatingPanel";
 
 export default function ProductDetail() {
   const [selectedPackageId, setSelectedPackageId] = useState<string>(
@@ -84,6 +85,7 @@ export default function ProductDetail() {
       </div>
       <FooterNav />
       <MobileBottomNav />
+      <CartFloatingPanel />
     </div>
   );
 }
