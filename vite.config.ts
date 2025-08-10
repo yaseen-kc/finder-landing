@@ -1,30 +1,34 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import path from 'path'
+import { dirname, resolve } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 // https://vite.dev/config/
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
 export default defineConfig({
   plugins: [react()],
   resolve: {
     alias: {
-      '@productDetail': path.resolve(__dirname, 'src/assets/components/productDetail'),
-      '@productDetailConstant': path.resolve(
+      '@productDetail': resolve(__dirname, 'src/assets/components/productDetail'),
+      '@productDetailConstant': resolve(
         __dirname,
         'src/assets/constants/productDetail/productDetailConstant.ts'
       ),
-      '@productList': path.resolve(
+      '@productList': resolve(
         __dirname,
         'src/assets/components/productList'
       ),
-      '@productListConstant': path.resolve(
+      '@productListConstant': resolve(
         __dirname,
         'src/assets/constants/productList/productListConstant.ts'
       ),
-      '@cartConstants': path.resolve(
+      '@cartConstants': resolve(
         __dirname,
         'src/assets/constants/cart/cartConstants.ts'
       ),
-      '@paginationConstant': path.resolve(
+      '@paginationConstant': resolve(
         __dirname,
         'src/assets/constants/productDetail/paginationConstant.ts'
       ),
