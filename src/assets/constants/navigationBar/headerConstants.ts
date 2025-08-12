@@ -13,68 +13,49 @@ export type PopularSearch = {
 
 export const NAV_CATEGORIES: Category[] = [
   {
-    id: "cushions",
-    title: "Cushions",
+    id: "knee-leg-braces",
+    title: "Knee & Leg Braces",
+    image:
+      "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Knee+Brace+Neoprene/img3.jpg",
     items: [
-      "Wedge Plus Cushion",
-      "Lap Desk Pillow",
-      "Travel Neck Pillow",
-      "Car Neck Rest Pillow",
+      "Knee Support",
+      "Double-Strap Neoprene",
+      "Hinged Knee Brace",
+      "Sports Knee Brace",
+      "Sports Knee Support Brace",
     ],
   },
   {
-    id: "pillows",
-    title: "Pillows",
+    id: "wrist-supports",
+    title: "Wrist Supports",
+    image:
+      "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Binder/img4.jpg",
     items: [
-      "Cuddle Sleep Pillow",
-      "Cervical Butterfly Pillow",
-      "Ultimate Deep Sleep Pillow",
-      "Ultimate Cozy Pillow",
+      "Wrist Binder",
+      "Wrist Wrap Support",
+      "Wrist Compression Sleeve",
     ],
   },
   {
-    id: "topper",
-    title: "Mattress Topper",
-    items: ["Topper Type A", "Topper Type B"],
-  },
-  {
-    id: "insoles",
-    title: "Shoe Insoles",
+    id: "shoulder-supports",
+    title: "Shoulder Supports",
+    image:
+      "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Shoulder+Support/img3.jpg",
     items: [
-      "Arch Sports",
-      "Dual Gel Pro",
-      "Dual Gel",
-      "Arch Support",
+      "Neoprene Shoulder Support L Black",
     ],
   },
   {
-    id: "footwear",
-    title: "Footwear",
-    items: ["School Shoes", "Cloud Comfort Sandal", "Baby Shoes"],
-  },
-  {
-    id: "barefoot",
-    title: "Barefoot Shoes",
+    id: "calf-supports",
+    title: "Calf Supports",
+    image:
+      "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Calf+Muscle+Support/img4.jpg",
     items: [
-      "Barefoot Sock Shoe",
-      "Barefoot Sock Shoe Classic",
-    ],
-  },
-  {
-    id: "socks",
-    title: "Socks",
-    items: ["Active Socks"],
-  },
-  {
-    id: "chairs",
-    title: "Chairs",
-    items: [
-      "Aeroluxe Massage Chair",
-      "3D Posture Plus Ergonomic Chair",
-      "AeroMesh Ergo Chair",
+      "Calf Muscle Support",
     ],
   },
 ];
+
 
 export const MOBILE_LEFT_RAIL_ITEMS: string[] = [
   "Combos",
@@ -119,23 +100,31 @@ export const SEARCH_LABELS = {
 
 export const POPULAR_SEARCHES: PopularSearch[] = [
   {
-    id: "cushions",
-    label: "Cushions",
-    image:
-      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=96&h=96&fit=crop&auto=format&q=60",
+    id: "knee-leg-braces",
+    label: "Knee & Leg Braces",
+    image: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Knee+Brace+Neoprene/img3.jpg",
   },
   {
-    id: "pillows",
-    label: "Pillows",
-    image:
-      "https://images.unsplash.com/photo-1519710164239-da123dc03ef4?w=96&h=96&fit=crop&auto=format&q=60",
+    id: "wrist-braces",
+    label: "Wrist Braces",
+    image: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Binder/img4.jpg",
   },
   {
-    id: "insoles",
-    label: "Insoles",
-    image:
-      "https://images.unsplash.com/photo-1620374649118-8a2d6d0e7962?w=96&h=96&fit=crop&auto=format&q=60",
+    id: "shoulder-supports",
+    label: "Shoulder Supports",
+    image: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Shoulder+Support/img3.jpg",
+  },
+  {
+    id: "calf-supports",
+    label: "Calf Supports",
+    image: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Calf+Muscle+Support/img4.jpg",
+  },
+  {
+    id: "wrist-wraps",
+    label: "Wrist Wraps",
+    image: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Wrap+Support/img8.jpg",
   },
 ];
+
 
 

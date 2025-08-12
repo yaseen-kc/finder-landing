@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Bars3Icon,
   ChevronDownIcon,
@@ -22,6 +22,7 @@ import {
   POPULAR_SEARCHES,
   type PopularSearch,
 } from "../../constants/navigationBar/headerConstants";
+import { BRAND_LOGO_SRC } from "../../constants/navigationBar/brandConstants";
 import DefaultCart from "../cart/defaultCart";
 import { DEFAULT_CART_ITEMS, type CartItem } from "@cartConstants";
 
@@ -32,12 +33,15 @@ function Logo() {
     <Link
       to="/"
       aria-label="Go to home"
-      className="font-semibold text-2xl tracking-tight select-none"
-   >
-      <span className="bg-gradient-to-r from-indigo-600 to-sky-500 bg-clip-text text-transparent">
-        {HEADER_STRINGS.LOGO_PRIMARY}
-      </span>{" "}
-      <span className="text-zinc-900">{HEADER_STRINGS.LOGO_SECONDARY}</span>
+      className="select-none inline-flex items-center"
+    >
+      <img
+        src={BRAND_LOGO_SRC}
+        alt="Brand logo"
+        className="h-8 w-auto"
+        loading="eager"
+        decoding="async"
+      />
     </Link>
   );
 }
@@ -60,11 +64,13 @@ function useOutsideClick<T extends HTMLElement>(handler: () => void) {
 
 // Main header navigation component
 export default function HeaderNav() {
+  const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState<string | null>(null); // Tracks which dropdown is open
   const [mobileOpen, setMobileOpen] = useState(false); // Tracks mobile drawer state
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [cartOpen, setCartOpen] = useState(false);
+  const [accountOpen, setAccountOpen] = useState(false);
 
   type CartLineItem = CartItem & { qty: number };
   const [cartItems, setCartItems] = useState<CartLineItem[]>(
@@ -79,6 +85,9 @@ export default function HeaderNav() {
   const searchDropdownRef = useOutsideClick<HTMLDivElement>(() =>
     setSearchOpen(false)
   );
+  const accountDropdownRef = useOutsideClick<HTMLDivElement>(() =>
+    setAccountOpen(false)
+  );
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -88,10 +97,7 @@ export default function HeaderNav() {
       if (e.key === "Escape") {
         setActiveMenu(null);
         setSearchOpen(false);
-      }
-      if (e.key === "Escape") {
-        setActiveMenu(null);
-        setSearchOpen(false);
+        setAccountOpen(false);
       }
     }
     window.addEventListener("keydown", onKey);
@@ -130,6 +136,11 @@ export default function HeaderNav() {
     });
   }
 
+  // Route helper for category-based navigation
+  function getCategoryLinkTarget(label: string): string {
+    return `/product-list?category=${encodeURIComponent(label)}`;
+  }
+
   // Cart helpers
   function updateQty(id: string, delta: number) {
     setCartItems((prev) =>
@@ -161,13 +172,13 @@ export default function HeaderNav() {
 
   // Base styles for nav links
   const navLinkBase =
-    "px-3 py-2 text-sm font-medium text-zinc-700 hover:text-zinc-900 rounded-md transition-colors inline-flex items-center gap-1 data-[active=true]:text-zinc-900";
+    "px-3 py-2 text-sm font-medium text-zinc-700 hover:text-primary-700 rounded-md transition-colors inline-flex items-center gap-1 data-[active=true]:text-primary-700";
 
   const totalCartQty = cartItems.reduce((sum, li) => sum + li.qty, 0);
 
   return (
     <header className="sticky top-0 z-50 border-b border-zinc-100 bg-white supports-[backdrop-filter]:bg-white">
-      <div className="mx-auto max-w-screen-2xl px-4">
+      <div className="mx-auto max-w-screen-2xl px-4 lg:px-36">
         {/* Top navigation row */}
         <div className="flex h-16 items-center justify-between">
           <div className="flex items-center gap-3">
@@ -199,7 +210,7 @@ export default function HeaderNav() {
               )}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
               />
             </button>
             {/* Combos link */}
@@ -207,7 +218,7 @@ export default function HeaderNav() {
               {HEADER_NAV_LABELS.COMBOS}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100"
               />
             </a>
             {/* Bestsellers dropdown */}
@@ -225,7 +236,7 @@ export default function HeaderNav() {
               )}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
               />
             </button>
             {/* New Launches link */}
@@ -233,7 +244,7 @@ export default function HeaderNav() {
               {HEADER_NAV_LABELS.NEW_LAUNCHES}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100"
               />
             </a>
             {/* Shop By Usecase dropdown */}
@@ -251,7 +262,7 @@ export default function HeaderNav() {
               )}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
               />
             </button>
             {/* More dropdown */}
@@ -269,7 +280,7 @@ export default function HeaderNav() {
               )}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
               />
             </button>
             {/* Help dropdown */}
@@ -287,7 +298,7 @@ export default function HeaderNav() {
               )}
               <span
                 aria-hidden
-                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-indigo-500/0 via-indigo-500/70 to-indigo-500/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
+                className="pointer-events-none absolute left-2 right-2 -bottom-0.5 h-px bg-gradient-to-r from-primary-600/0 via-primary-600/70 to-primary-600/0 opacity-0 transition-opacity group-hover:opacity-100 data-[active=true]:opacity-100"
               />
             </button>
           </nav>
@@ -301,12 +312,49 @@ export default function HeaderNav() {
             >
               <MagnifyingGlassIcon className="w-6 h-6" />
             </button>
-            <button
-              className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
-              aria-label={HEADER_ARIA.ACCOUNT}
-            >
-              <UserIcon className="w-6 h-6" />
-            </button>
+            {/* Account dropdown */}
+            <div className="relative" ref={accountDropdownRef}>
+              <button
+                type="button"
+                className="p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
+                aria-haspopup="menu"
+                aria-expanded={accountOpen}
+                aria-label={HEADER_ARIA.ACCOUNT}
+                onClick={() => {
+                  setAccountOpen((prev) => !prev);
+                  setActiveMenu(null);
+                  setSearchOpen(false);
+                }}
+              >
+                <UserIcon className="w-6 h-6" />
+              </button>
+              {accountOpen && (
+                <div
+                  role="menu"
+                  className="absolute right-0 mt-2 w-40 rounded-md border border-zinc-200 bg-white shadow-md z-50 py-1"
+                >
+                  <Link
+                    to="/profile"
+                    role="menuitem"
+                    className="block w-full text-left px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+                    onClick={() => setAccountOpen(false)}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    role="menuitem"
+                    className="block w-full text-left px-3 py-2 text-sm text-zinc-700 hover:bg-zinc-50"
+                    onClick={() => {
+                      setAccountOpen(false);
+                      navigate("/account/login");
+                    }}
+                  >
+                    Log out
+                  </button>
+                </div>
+              )}
+            </div>
             <button
               className="relative p-2.5 rounded-full border border-zinc-200/70 hover:bg-zinc-50 hover:border-zinc-300 transition-colors"
               aria-label={HEADER_ARIA.CART}
@@ -355,14 +403,14 @@ export default function HeaderNav() {
                     onClick={() => setSearchQuery(item.label)}
                     className="group inline-flex items-center gap-3 rounded-xl border border-zinc-200 bg-white px-3 py-2 shadow-sm hover:bg-zinc-50"
                   >
-                    <ArrowTrendingUpIcon className="h-4 w-4 text-zinc-400" />
+                    <ArrowTrendingUpIcon className="h-4 w-4 text-primary-600/60" />
                     <img
                       src={item.image}
                       alt={item.label}
                       className="h-8 w-8 rounded-xl object-cover"
                       loading="lazy"
                     />
-                    <span className="text-sm text-zinc-700 group-hover:text-zinc-900">
+                    <span className="text-sm text-zinc-700 group-hover:text-primary-700">
                       {item.label}
                     </span>
                   </button>
@@ -408,19 +456,36 @@ export default function HeaderNav() {
             >
               {categories.map((category) => (
                 <div key={category.id} className="min-w-[220px]">
-                  <div className="h-40 w-40 rounded-2xl bg-zinc-50 ring-1 ring-zinc-200 flex items-center justify-center text-zinc-500 text-sm shadow-inner">
-                    {category.title}
+                  <div className="h-40 w-40 rounded-2xl bg-zinc-50 ring-1 ring-zinc-200 flex items-center justify-center text-zinc-500 text-sm shadow-inner overflow-hidden">
+                    {category.image ? (
+                      <img
+                        src={category.image}
+                        alt={category.title}
+                        className="h-full w-full object-cover"
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    ) : (
+                      category.title
+                    )}
                   </div>
-                  <h4 className="mt-4 font-semibold text-zinc-900">
+                  <Link
+                    to={getCategoryLinkTarget(category.title)}
+                    className="mt-4 font-semibold text-zinc-900 hover:text-primary-700 block"
+                    onClick={() => setActiveMenu(null)}
+                  >
                     {category.title}
-                  </h4>
+                  </Link>
                   <ul className="mt-2 space-y-2 text-sm text-zinc-600">
                     {category.items.map((label) => (
-                      <li
-                        key={label}
-                        className="hover:text-zinc-900 cursor-pointer"
-                      >
-                        {label}
+                      <li key={label} className="cursor-pointer">
+                        <Link
+                          to={getCategoryLinkTarget(label)}
+                          className="hover:text-zinc-900"
+                          onClick={() => setActiveMenu(null)}
+                        >
+                          {label}
+                        </Link>
                       </li>
                     ))}
                   </ul>
@@ -545,17 +610,29 @@ export default function HeaderNav() {
               <div className="text-sm font-semibold mb-3">Categories</div>
               <div className="grid grid-cols-3 gap-3">
                 {categories.map((c) => (
-                  <div
+                  <Link
                     key={c.id}
+                    to={getCategoryLinkTarget(c.title)}
                     className="flex flex-col items-center text-center"
+                    onClick={() => setMobileOpen(false)}
                   >
-                    <div className="h-16 w-16 rounded-xl bg-zinc-50 ring-1 ring-zinc-200 text-[10px] text-zinc-500 flex items-center justify-center">
-                      {c.title}
+                    <div className="h-16 w-16 rounded-xl bg-zinc-50 ring-1 ring-zinc-200 text-[10px] text-zinc-500 flex items-center justify-center overflow-hidden">
+                      {c.image ? (
+                        <img
+                          src={c.image}
+                          alt={c.title}
+                          className="h-full w-full object-cover"
+                          loading="lazy"
+                          decoding="async"
+                        />
+                      ) : (
+                        c.title
+                      )}
                     </div>
                     <div className="mt-2 text-[11px] text-zinc-700 line-clamp-2">
                       {c.title}
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>

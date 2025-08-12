@@ -36,8 +36,14 @@
         "@cartConstants": [
           "src/assets/constants/cart/cartConstants.ts"
         ],
+        "@checkoutConstant": [
+          "src/assets/constants/checkout/checkoutConstant.ts"
+        ],
         "@paginationConstant": [
           "src/assets/constants/productDetail/paginationConstant.ts"
+        ],
+        "@profileConstant": [
+          "src/assets/constants/profile/profileConstant.ts"
         ]
       }
   },

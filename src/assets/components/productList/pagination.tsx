@@ -34,7 +34,7 @@ export default function Pagination({
   const handleNext = () => onPageChange(Math.min(totalPages, currentPage + 1));
 
   return (
-    <nav className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-8">
+    <nav className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-36">
       <div className="mt-8 mb-14 flex items-center justify-center gap-2">
         <button
           type="button"

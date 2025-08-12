@@ -39,16 +39,16 @@ export default function ProductCard({ item }: Props) {
         <div className="text-xs sm:text-sm text-zinc-400 line-through">
           ₹{item.compareAtPrice.toLocaleString()}
         </div>
-        <div className="text-xs sm:text-sm font-semibold text-emerald-700">
+        <div className="text-xs sm:text-sm font-semibold text-success-700">
           {discountLabel}
         </div>
       </div>
 
-      <div className="mt-1 text-xs text-zinc-600">
+      <div className="mt-1 hidden text-xs text-zinc-600 sm:block">
         ⭐ {item.rating.toFixed(2)} ({item.reviewCount}+ Reviews)
       </div>
 
-      <button className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-yellow-400 py-3 font-semibold text-zinc-900">
+      <button className="mt-4 inline-flex w-full items-center justify-center rounded-xl bg-accent-600 hover:bg-accent-700 py-3 font-semibold text-white">
         ADD TO CART
       </button>
     </div>

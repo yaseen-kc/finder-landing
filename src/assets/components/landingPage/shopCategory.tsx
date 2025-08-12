@@ -4,8 +4,10 @@ export default function ShopCategory() {
   const categories: ShopCategory[] = SHOP_CATEGORIES;
 
   return (
-    <section className="mx-auto max-w-screen-2xl px-4 py-10">
-      <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">{SHOP_CATEGORY_STRINGS.SECTION_TITLE}</h3>
+    <section className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-36 py-10">
+      <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
+        {SHOP_CATEGORY_STRINGS.SECTION_TITLE}
+      </h3>
 
       {/* Mobile: horizontal scroller with snap; Desktop: wider scroller */}
       <div className="mt-6">

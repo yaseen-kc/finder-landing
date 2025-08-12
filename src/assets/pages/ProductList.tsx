@@ -9,7 +9,7 @@ import {
   type ProductListItem,
 } from "@productListConstant";
 import { useEffect, useMemo, useState } from "react";
-import CartFloatingPanel from "../components/cart/cartFloatingPanel";
+// import CartFloatingPanel from "../components/cart/cartFloatingPanel";
 import Pagination from "@productList/pagination";
 import { DEFAULT_PAGINATION_CONFIG } from "@paginationConstant";
 
@@ -56,7 +56,7 @@ export default function ProductList() {
   return (
     <div className="pb-20 lg:pb-0">
       <HeaderNav />
-      <div className="mx-auto max-w-screen-2xl px-4 p-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-screen-2xl px-4 p-4 sm:px-6 lg:px-36">
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold text-zinc-900">Products</h1>
           <SortDropdown
@@ -66,7 +66,7 @@ export default function ProductList() {
           />
         </div>
 
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        <div className="mt-6 grid grid-cols-2 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {paginated.map((item, idx) => (
             <ProductCard
               key={`${item.id}-${(page - 1) * pageSize + idx}`}
@@ -83,7 +83,7 @@ export default function ProductList() {
       />
       <FooterNav />
       <MobileBottomNav />
-      <CartFloatingPanel />
+      {/* <CartFloatingPanel /> */}
     </div>
   );
 }

@@ -17,7 +17,7 @@ function getIconByKey(key: MobileBottomNavItem["key"]) {
       return HomeIcon;
     case "categories":
       return Squares2X2Icon;
-    case "account":
+    case "profile":
       return UserIcon;
     case "cart":
       return ShoppingBagIcon;
@@ -64,7 +64,16 @@ export default function MobileBottomNav() {
                   )}
                 </NavLink>
               ) : (
-                <a href={item.href} className="block py-1">
+                <a
+                  href={item.href}
+                  className="block py-1"
+                  onClick={(e) => {
+                    if (item.key === "cart") {
+                      e.preventDefault();
+                      window.dispatchEvent(new CustomEvent("open-cart"));
+                    }
+                  }}
+                >
                   <div className="flex flex-col items-center justify-center gap-1">
                     <Icon className="w-6 h-6 text-zinc-400" />
                     <span className="text-[11px] font-medium text-zinc-400">

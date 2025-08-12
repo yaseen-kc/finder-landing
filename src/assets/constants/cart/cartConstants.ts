@@ -53,13 +53,13 @@ export const CART_POLICY = {
 // Default cart seed (used for demo and local state)
 export const DEFAULT_CART_ITEMS: CartItem[] = [
   {
-    id: "wedge-plus",
-    title: "Ultimate Wedge Plus Cushion",
+    id: "finder-knee-support-men-women",
+    title: "Knee Support for Men & Women",
     color: "White",
     mrp: 4799,
     price: 1899,
     image:
-      "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?w=256&h=256&fit=crop&auto=format&q=60",
+      "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Knee+Support+Double+Strap+Protector/img2.jpg",
   },
 ];
 

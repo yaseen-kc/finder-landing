@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { Link } from "react-router-dom";
-import { LOGIN_COPY, LOGIN_VALIDATION } from "../../constants/authentication/loginConstant";
+import { LOGIN_COPY } from "../../constants/authentication/loginConstant";
+import { loginSchema } from "../../schemas/auth/loginSchema";
 
 type FormState = {
   email: string;
@@ -10,18 +11,12 @@ type FormState = {
 type FormErrors = Partial<Record<keyof FormState, string>>;
 
 function validate(state: FormState): FormErrors {
+  const result = loginSchema.safeParse(state);
+  if (result.success) return {};
   const errors: FormErrors = {};
-  if (!state.email.trim()) {
-    errors.email = LOGIN_VALIDATION.EMAIL_REQUIRED;
-  } else {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(state.email)) errors.email = LOGIN_VALIDATION.EMAIL_INVALID;
-  }
-
-  if (!state.password) {
-    errors.password = LOGIN_VALIDATION.PASSWORD_REQUIRED;
-  } else if (state.password.length < 8) {
-    errors.password = LOGIN_VALIDATION.PASSWORD_MIN_LENGTH;
+  for (const issue of result.error.issues) {
+    const path = issue.path[0] as keyof FormState | undefined;
+    if (path && !errors[path]) errors[path] = issue.message;
   }
   return errors;
 }
@@ -112,12 +107,12 @@ export default function LoginView() {
                 aria-describedby={emailInvalid ? "email-error" : undefined}
                 className={`mt-1 block w-full rounded-lg border px-3 py-2.5 placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-shadow ${
                   emailInvalid
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-zinc-300 focus:ring-indigo-500 focus:border-indigo-500"
+                    ? "border-error-500 focus:ring-error-500"
+                    : "border-zinc-300 focus:ring-primary-600 focus:border-primary-600"
                 }`}
               />
               {emailInvalid && (
-                <p id="email-error" className="mt-2 text-sm text-red-600">
+                <p id="email-error" className="mt-2 text-sm text-error-600">
                   {errors.email}
                 </p>
               )}
@@ -146,12 +141,12 @@ export default function LoginView() {
                 }
                 className={`mt-1 block w-full rounded-lg border px-3 py-2.5 placeholder:text-zinc-400 focus:outline-none focus:ring-2 transition-shadow ${
                   passwordInvalid
-                    ? "border-red-500 focus:ring-red-500"
-                    : "border-zinc-300 focus:ring-indigo-500 focus:border-indigo-500"
+                    ? "border-error-500 focus:ring-error-500"
+                    : "border-zinc-300 focus:ring-primary-600 focus:border-primary-600"
                 }`}
               />
               {passwordInvalid && (
-                <p id="password-error" className="mt-2 text-sm text-red-600">
+                <p id="password-error" className="mt-2 text-sm text-error-600">
                   {errors.password}
                 </p>
               )}
@@ -161,7 +156,7 @@ export default function LoginView() {
               <button
                 type="submit"
                 disabled={!isValid || submitting}
-                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-indigo-600 px-4 font-medium text-white shadow-sm transition-colors hover:bg-indigo-700 disabled:cursor-not-allowed disabled:opacity-70"
+                className="inline-flex h-11 w-full items-center justify-center rounded-lg bg-primary-600 px-4 font-medium text-white shadow-sm transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-70"
               >
                 {submitting ? "Signing in…" : LOGIN_COPY.loginButton}
               </button>
@@ -170,7 +165,7 @@ export default function LoginView() {
             <div className="mt-6 flex items-center justify-between text-sm">
               <Link
                 to={LOGIN_COPY.contactLinkHref}
-                className="text-indigo-600 hover:text-indigo-700 font-medium"
+                className="text-primary-600 hover:text-primary-700 font-medium"
               >
                 {LOGIN_COPY.contactLinkText}
               </Link>
@@ -179,7 +174,7 @@ export default function LoginView() {
                 {LOGIN_COPY.signupPrompt}{" "}
                 <Link
                   to={LOGIN_COPY.signupLinkHref}
-                  className="font-medium text-indigo-600 hover:text-indigo-700"
+                  className="font-medium text-primary-600 hover:text-primary-700"
                 >
                   {LOGIN_COPY.signupLinkText}
                 </Link>

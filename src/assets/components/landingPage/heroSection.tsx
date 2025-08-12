@@ -109,7 +109,7 @@ export default function HeroSection() {
   return (
     <section
       ref={containerRef}
-      className="relative w-full h-[75vh] md:h-[88vh] lg:h-[96vh] overflow-hidden bg-neutral-900 text-white"
+      className="relative w-full h-[60vh] md:h-[88vh] lg:h-[96vh] overflow-hidden bg-neutral-900 text-white"
       role="region"
       aria-roledescription="carousel"
       aria-label={HERO_ARIA.REGION_LABEL}
@@ -146,7 +146,7 @@ export default function HeroSection() {
               {/* Overlay gradient for readability */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-black/20" />
               {/* Text content */}
-              {(slide.heading || slide.subheading || slide.ctaText) && (
+              {/* {(slide.heading || slide.subheading || slide.ctaText) && (
                 <div
                   className={`absolute inset-0 p-4 sm:p-6 md:p-10 flex items-center justify-center ${
                     prefersReducedMotion ? "" : ""
@@ -176,7 +176,7 @@ export default function HeroSection() {
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           );
         })}

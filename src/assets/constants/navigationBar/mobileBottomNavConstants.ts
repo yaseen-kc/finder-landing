@@ -1,4 +1,4 @@
-export type MobileBottomNavKey = "home" | "categories" | "account" | "cart";
+export type MobileBottomNavKey = "home" | "categories" | "profile" | "cart";
 
 export type MobileBottomNavItem = {
   key: MobileBottomNavKey;
@@ -8,8 +8,8 @@ export type MobileBottomNavItem = {
 
 export const MOBILE_BOTTOM_NAV_ITEMS: MobileBottomNavItem[] = [
   { key: "home", label: "Home", href: "/" },
-  { key: "categories", label: "Categories", href: "#categories" },
-  { key: "account", label: "Account", href: "/login" },
+  { key: "categories", label: "Categories", href: "/product-list" },
+  { key: "profile", label: "profile", href: "/profile" },
   { key: "cart", label: "Cart", href: "#cart" },
 ];
 

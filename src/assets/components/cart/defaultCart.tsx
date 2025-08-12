@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   ChevronLeftIcon,
   ChevronDownIcon,
@@ -28,6 +29,7 @@ export default function DefaultCart({
 }: DefaultCartProps) {
   const [policyOpen, setPolicyOpen] = useState(true);
   const [removeId, setRemoveId] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const totalMrp = items.reduce((sum, li) => sum + li.mrp * li.qty, 0);
   const totalPrice = items.reduce((sum, li) => sum + li.price * li.qty, 0);
@@ -149,7 +151,7 @@ export default function DefaultCart({
                             </button>
                           </div>
                           <button
-                            className="text-xs text-red-600 hover:underline"
+                            className="text-xs text-error-600 hover:underline"
                             aria-label={CART_ARIA.REMOVE_ITEM}
                             onClick={() => requestRemove(li.id)}
                           >
@@ -161,7 +163,7 @@ export default function DefaultCart({
                         <div className="text-xs line-through text-zinc-400">
                           ₹{li.mrp.toLocaleString()}
                         </div>
-                        <div className="text-sm font-semibold text-emerald-700">
+                <div className="text-sm font-semibold text-success-700">
                           ₹{li.price.toLocaleString()}
                         </div>
                       </div>
@@ -184,12 +186,12 @@ export default function DefaultCart({
                     <span className="text-zinc-600">{CART_PRICE_LABELS.DELIVERY_FEE}</span>
                     <span className="flex items-center gap-2">
                       <span className="text-zinc-400 line-through">₹{CART_POLICY.DELIVERY_FEE_MRP}</span>
-                      <span className="text-emerald-600 font-medium">Free</span>
+                      <span className="text-success-600 font-medium">Free</span>
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-zinc-600">{CART_PRICE_LABELS.DISCOUNT}</span>
-                    <span className="text-emerald-700 font-semibold">₹{totalDiscount.toLocaleString()}</span>
+                    <span className="text-success-700 font-semibold">₹{totalDiscount.toLocaleString()}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm pt-2 border-t border-zinc-100">
                     <span className="text-zinc-900 font-medium">{CART_PRICE_LABELS.TOTAL_PRICE}</span>
@@ -229,7 +231,7 @@ export default function DefaultCart({
             <span className="text-zinc-700">
               {CART_PRICE_LABELS.TOTAL_PRICE}
               {totalDiscount > 0 && (
-                <span className="ml-2 text-emerald-700 bg-emerald-50 rounded-full px-2 py-0.5 text-xs align-middle">
+                <span className="ml-2 text-success-700 bg-success-50 rounded-full px-2 py-0.5 text-xs align-middle">
                   ₹ {totalDiscount.toLocaleString()} applied!
                 </span>
               )}
@@ -237,8 +239,14 @@ export default function DefaultCart({
             <span className="font-semibold">₹{totalPrice.toLocaleString()}</span>
           </div>
           <button
-            className="w-full inline-flex items-center justify-center rounded-xl bg-yellow-400 text-zinc-900 font-semibold py-3"
+            className="w-full inline-flex items-center justify-center rounded-xl bg-accent-600 hover:bg-accent-700 text-white font-semibold py-3"
             disabled={items.length === 0}
+            type="button"
+            onClick={() => {
+              if (items.length === 0) return;
+              onClose();
+              navigate("/checkout");
+            }}
           >
             {CART_STRINGS.PROCEED}
           </button>
@@ -269,7 +277,7 @@ export default function DefaultCart({
                 <button className="px-4 py-2 rounded-xl ring-1 ring-zinc-200 text-zinc-900 w-full" onClick={cancelRemove}>
                   {CART_STRINGS.CANCEL}
                 </button>
-                <button className="px-4 py-2 rounded-xl bg-rose-500 text-white w-full" onClick={confirmRemove}>
+                <button className="px-4 py-2 rounded-xl bg-error-600 text-white w-full" onClick={confirmRemove}>
                   {CART_STRINGS.REMOVE}
                 </button>
               </div>

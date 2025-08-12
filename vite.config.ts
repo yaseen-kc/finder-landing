@@ -24,6 +24,10 @@ export default defineConfig({
         __dirname,
         'src/assets/constants/productList/productListConstant.ts'
       ),
+      '@checkoutConstant': resolve(
+        __dirname,
+        'src/assets/constants/checkout/checkoutConstant.ts'
+      ),
       '@cartConstants': resolve(
         __dirname,
         'src/assets/constants/cart/cartConstants.ts'
@@ -31,6 +35,10 @@ export default defineConfig({
       '@paginationConstant': resolve(
         __dirname,
         'src/assets/constants/productDetail/paginationConstant.ts'
+      ),
+      '@profileConstant': resolve(
+        __dirname,
+        'src/assets/constants/profile/profileConstant.ts'
       ),
     },
   },

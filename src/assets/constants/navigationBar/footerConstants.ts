@@ -12,21 +12,16 @@ export const COMPANY_NAME = "Finder Sports";
 export const COMPANY_TAGLINE =
   "Comfort engineered for everyday performance.";
 
-// Footer logo copy used by the footer component
-export const FOOTER_LOGO = {
-  PRIMARY: "Finder",
-  SECONDARY: "Sports",
-} as const;
-
 export const FOOTER_SECTIONS: FooterSection[] = [
   {
     title: "Shop",
     links: [
-      { label: "Cushions", href: "#" },
-      { label: "Pillows", href: "#" },
-      { label: "Shoe Insoles", href: "#" },
-      { label: "Footwear", href: "#" },
-      { label: "Barefoot Shoes", href: "#" },
+      { label: "Knee & Leg Braces", href: "#" },
+      { label: "Wrist Braces", href: "#" },
+      { label: "Shoulder Supports", href: "#" },
+      { label: "Calf Supports", href: "#" },
+      { label: "Wrist Wraps", href: "#" },
+      { label: "Hand & Wrist Braces", href: "#" },
     ],
   },
   {

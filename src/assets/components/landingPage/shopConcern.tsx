@@ -4,7 +4,7 @@ export default function ShopConcern() {
   const concerns: Concern[] = SHOP_CONCERNS;
 
   return (
-    <section className="mx-auto max-w-screen-2xl px-4 py-10">
+    <section className="mx-auto max-w-screen-2xl px-4 sm:px-6 lg:px-36 py-10">
       <h3 className="text-2xl md:text-3xl font-semibold tracking-tight text-zinc-900">
         {SHOP_CONCERN_STRINGS.SECTION_TITLE}
       </h3>
@@ -31,7 +31,9 @@ export default function ShopConcern() {
               <div className="absolute inset-0 bg-gradient-to-r from-black via-black/80 to-transparent" />
               {/* Text */}
               <div className="relative h-full flex items-center px-6">
-                <span className="text-base sm:text-lg font-semibold">{item.title}</span>
+                <span className="text-base sm:text-lg font-semibold">
+                  {item.title}
+                </span>
               </div>
             </a>
           ))}
@@ -55,7 +57,9 @@ export default function ShopConcern() {
               />
               <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/30 to-transparent" />
               <div className="absolute top-4 left-4 sm:top-5 sm:left-5">
-                <div className="text-white text-lg font-semibold drop-shadow">{item.title}</div>
+                <div className="text-white text-lg font-semibold drop-shadow">
+                  {item.title}
+                </div>
               </div>
             </a>
           ))}

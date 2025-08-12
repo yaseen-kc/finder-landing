@@ -7,60 +7,43 @@ export type ShopCategory = {
 
 export const SHOP_CATEGORIES: ShopCategory[] = [
     {
-        id: "insoles",
-        title: "Insoles",
-        imageUrl: "https://picsum.photos/seed/insoles/320/240",
-        href: "#",
+        id: "knee-leg-braces",
+        title: "Knee & Leg Braces",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Knee+Brace+Neoprene/img2.jpg",
+        href: "/product-list",
     },
     {
-        id: "cushions",
-        title: "Cushions",
-        imageUrl: "https://picsum.photos/seed/cushions/320/240",
-        href: "#",
+        id: "wrist-braces",
+        title: "Wrist Braces",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Wrap+Support/img6.jpg",
+        href: "/product-list",
     },
     {
-        id: "car-essentials",
-        title: "Car Essentials",
-        imageUrl: "https://picsum.photos/seed/car-essentials/320/240",
-        href: "#",
+        id: "shoulder-supports",
+        title: "Shoulder Supports",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Shoulder+Support/img3.jpg",
+        href: "/product-list",
     },
     {
-        id: "chairs",
-        title: "Chairs",
-        imageUrl: "https://picsum.photos/seed/chairs/320/240",
-        href: "#",
+        id: "calf-supports",
+        title: "Calf Supports",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Calf+Muscle+Support/img3.jpg",
+        href: "/product-list",
     },
     {
-        id: "maternity",
-        title: "Maternity",
-        imageUrl: "https://picsum.photos/seed/maternity/320/240",
-        href: "#",
+        id: "wrist-wraps",
+        title: "Wrist Wraps",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Wrap+Support/img7.jpg",
+        href: "/product-list",
     },
     {
-        id: "pillows",
-        title: "Pillows",
-        imageUrl: "https://picsum.photos/seed/pillows/320/240",
-        href: "#",
-    },
-    {
-        id: "desks",
-        title: "Desks",
-        imageUrl: "https://picsum.photos/seed/desks/320/240",
-        href: "#",
-    },
-    {
-        id: "footwear",
-        title: "Footwear",
-        imageUrl: "https://picsum.photos/seed/footwear/320/240",
-        href: "#",
-    },
-    // {
-    //     id: "desks",
-    //     title: "Desks",
-    //     imageUrl: "https://picsum.photos/seed/desks/320/240",
-    //     href: "#",
-    // },
+        id: "hand-wrist-braces",
+        title: "Hand & Wrist Braces",
+        imageUrl: "https://frido-assets.s3.ap-south-1.amazonaws.com/product-images/Finder+Wrist+Wrap+Support/img2.jpg",
+        href: "/product-list",
+    }
 ];
+
 
 export const SHOP_CATEGORY_STRINGS = {
     SECTION_TITLE: "Shop by Category",

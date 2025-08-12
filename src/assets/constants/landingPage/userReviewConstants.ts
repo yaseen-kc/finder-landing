@@ -7,17 +7,17 @@ export type UserReview = {
 
 export const USER_REVIEWS: UserReview[] = [
     {
-        id: "ganesh-quote",
+        id: "elliot-anderson",
         quote:
-            "Empowers you to make a difference in people's lives while building your success, because that's what great partnerships do.",
-        author: "Ganesh Sonawane",
-        highlights: ["make a difference in people's lives"],
+            "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et",
+        author: "Elliot Anderson",
+        highlights: ["magnis dis parturient montes, nascetur ridiculus mus."],
     },
 ];
 
 export const USER_REVIEW_STRINGS = {
-  QUOTE_MARK: "“",
-  AUTHOR_PREFIX: "~ ",
+    QUOTE_MARK: "“",
+    AUTHOR_PREFIX: "~ ",
 } as const;
 
 

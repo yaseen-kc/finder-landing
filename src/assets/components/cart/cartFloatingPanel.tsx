@@ -151,12 +151,12 @@ export default function CartFloatingPanel({ open: forcedOpen }: Props) {
               ₹{totalMrp.toLocaleString()}
             </div>
             <div className="text-base font-semibold">₹{totalPrice.toLocaleString()}</div>
-            <span className="inline-flex items-center rounded-full bg-emerald-200/80 text-emerald-900 px-2 py-0.5 text-[11px] font-medium">
+            <span className="inline-flex items-center rounded-full bg-success-200 text-success-800 px-2 py-0.5 text-[11px] font-medium">
               {CART_STRINGS.DISCOUNT_BADGE}
             </span>
           </div>
           <button
-            className="inline-flex items-center justify-center rounded-xl bg-yellow-400 text-zinc-900 font-semibold px-5 py-2"
+            className="inline-flex items-center justify-center rounded-xl bg-accent-600 hover:bg-accent-700 text-white font-semibold px-5 py-2"
             onClick={() => {
               // Open the main cart drawer; keep floating panel visible
               window.dispatchEvent(new CustomEvent("open-cart"));

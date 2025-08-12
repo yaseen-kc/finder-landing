@@ -6,7 +6,7 @@ import BestSeller from "../components/landingPage/bestSeller";
 import ShopConcern from "../components/landingPage/shopConcern";
 import UserReview from "../components/landingPage/userReview";
 import FooterNav from "../components/navigationBar/footerNav";
-import CartFloatingPanel from "../components/cart/cartFloatingPanel";
+// import CartFloatingPanel from "../components/cart/cartFloatingPanel";
 
 export default function LandingPage() {
   return (
@@ -19,7 +19,7 @@ export default function LandingPage() {
       <UserReview />
       <FooterNav />
       <MobileBottomNav />
-      <CartFloatingPanel />
+      {/* <CartFloatingPanel /> */}
     </div>
   );
 }
