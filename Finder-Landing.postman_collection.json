@@ -1,0 +1,230 @@
+{
+  "info": {
+    "_postman_id": "b2b8b3d0-0f04-4b8a-8f3e-9a9b4a0a1c11",
+    "name": "Finder Landing API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Collection to test the Finder Landing backend API (auth and password reset flows). Set {{base_url}} to your server (default http://localhost:3000). For OTPs, check the email inbox configured by the backend."
+  },
+  "variable": [
+    { "key": "base_url", "value": "http://localhost:3000", "type": "string" },
+    { "key": "email", "value": "", "type": "string" },
+    { "key": "password", "value": "Password123!", "type": "string" },
+    { "key": "new_password", "value": "NewPassword123!", "type": "string" },
+    { "key": "otp", "value": "", "type": "string" }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Ensure base variables exist",
+          "const setIfEmpty = (k, v) => { if (!pm.collectionVariables.get(k)) { pm.collectionVariables.set(k, v); } };",
+          "setIfEmpty('base_url', 'http://localhost:3000');",
+          "// Generate a unique email if not provided",
+          "if (!pm.collectionVariables.get('email')) {",
+          "  const unique = Date.now() + '_' + Math.floor(Math.random()*100000);",
+          "  pm.collectionVariables.set('email', `test_${unique}@example.com`);",
+          "}",
+          "setIfEmpty('password', 'Password123!');",
+          "setIfEmpty('new_password', 'NewPassword123!');"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/signup",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "signup" ]
+            },
+            "description": "Creates a new user and sends a verification OTP to the email."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.userId) { pm.collectionVariables.set('userId', json.userId); }",
+                  "// Keep email/password for subsequent steps",
+                  "try { const req = JSON.parse(pm.request.body.raw); pm.collectionVariables.set('email', req.email); pm.collectionVariables.set('password', req.password); } catch(e) {}"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Verify Email (OTP)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/verify-email",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "verify-email" ]
+            },
+            "description": "Verifies the user's email with the OTP received. Set {{otp}} manually from the email inbox."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"password\": \"{{password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/login",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "login" ]
+            },
+            "description": "Logs in the user. Returns the user object; no token is issued by the current API."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "const json = pm.response.json();",
+                  "if (json && json.user && json.user.id) { pm.collectionVariables.set('userId', json.user.id); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password - Request OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/forgot-password/request",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "forgot-password", "request" ]
+            },
+            "description": "Sends a password reset OTP to the user's email."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password - Verify OTP",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/forgot-password/verify",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "forgot-password", "verify" ]
+            },
+            "description": "Verifies the OTP for password reset."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Forgot Password - Reset",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{email}}\",\n  \"otp\": \"{{otp}}\",\n  \"newPassword\": \"{{new_password}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/auth/forgot-password/reset",
+              "host": [ "{{base_url}}" ],
+              "path": [ "api", "auth", "forgot-password", "reset" ]
+            },
+            "description": "Resets the user's password using the OTP."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+
+

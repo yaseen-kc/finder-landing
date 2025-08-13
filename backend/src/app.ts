@@ -3,10 +3,10 @@ import dotenv from "dotenv";
 import helmet from "helmet";
 import cors from "cors";
 import { authRoutes } from "./routes/auth/authRoutes";
-import { userRoutes } from "./routes/user/userRoutes";
-import { productRoutes } from "./routes/product/productRoutes";
-import { cartRoutes } from "./routes/cart/cartRoutes";
-import { orderRoutes } from "./routes/order/orderRoutes";
+// import { userRoutes } from "./routes/user/userRoutes";
+// import { productRoutes } from "./routes/product/productRoutes";
+// import { cartRoutes } from "./routes/cart/cartRoutes";
+// import { orderRoutes } from "./routes/order/orderRoutes";
 
 
 dotenv.config();
@@ -20,10 +20,10 @@ app.use(cors());
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/products", productRoutes);
-app.use("/api/cart", cartRoutes);
-app.use("/api/orders", orderRoutes);
+// app.use("/api/user", userRoutes);
+// app.use("/api/products", productRoutes);
+// app.use("/api/cart", cartRoutes);
+// app.use("/api/orders", orderRoutes);
 
 // Start server
 app.listen(PORT, async () => {
