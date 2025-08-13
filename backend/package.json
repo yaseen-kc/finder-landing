@@ -7,6 +7,9 @@
     "build": "tsc",
     "build:watch": "tsc -w",
     "start": "node dist/app.js",
+    "db:seed:product": "ts-node prisma/productSeed.ts",
+    "db:seed:orders": "ts-node prisma/orderSeed.ts",
+    "db:seed:user": "ts-node prisma/userSeed.ts",
     "start:watch": "node --watch --watch-path=dist dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,12 +21,15 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.2.1",
+    "@types/bcryptjs": "^2.4.6",
     "prisma": "^6.13.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.9.2"
   },
   "dependencies": {
     "@prisma/client": "^6.13.0",
-    "helmet": "^8.1.0"
+    "@faker-js/faker": "^9.0.0",
+    "helmet": "^8.1.0",
+    "bcryptjs": "^2.4.3"
   }
 }
