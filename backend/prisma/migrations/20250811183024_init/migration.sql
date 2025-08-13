@@ -1,0 +1,78 @@
+-- CreateTable
+CREATE TABLE "public"."User" (
+    "id" TEXT NOT NULL,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
+    "phone" TEXT,
+    "emailVerified" BOOLEAN NOT NULL DEFAULT false,
+    "phoneVerified" BOOLEAN NOT NULL DEFAULT false,
+    "verifiedAt" TIMESTAMP(3),
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "verificationToken" TEXT,
+    "verificationTokenExpiresAt" TIMESTAMP(3),
+    "resetPasswordOtp" TEXT,
+    "resetPasswordOtpExpiresAt" TIMESTAMP(3),
+    "profilePic" TEXT,
+    "dob" TIMESTAMP(3),
+    "gender" TEXT,
+    "address" JSONB,
+    "preferredLanguage" TEXT,
+    "ipAddress" TEXT,
+    "isBlocked" BOOLEAN NOT NULL,
+
+    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "public"."Product" (
+    "id" SERIAL NOT NULL,
+    "handle" TEXT,
+    "title" TEXT,
+    "body" TEXT,
+    "vendor" TEXT,
+    "category" TEXT,
+    "type" TEXT,
+    "tags" TEXT,
+    "published" BOOLEAN,
+    "options" JSONB,
+    "sku" TEXT,
+    "grams" INTEGER,
+    "inventoryTracker" TEXT,
+    "inventoryQty" INTEGER DEFAULT 0,
+    "inventoryPolicy" TEXT,
+    "fulfillmentService" TEXT,
+    "price" DOUBLE PRECISION,
+    "comparePrice" DOUBLE PRECISION,
+    "requiresShipping" BOOLEAN,
+    "taxable" BOOLEAN,
+    "barcode" TEXT,
+    "imageSrc" JSONB,
+    "imageAlt" TEXT,
+    "giftCard" BOOLEAN,
+    "seoTitle" TEXT,
+    "seoDescription" TEXT,
+    "googleCategory" TEXT,
+    "googleGender" TEXT,
+    "googleAgeGroup" TEXT,
+    "googleMPN" TEXT,
+    "googleCondition" TEXT,
+    "googleCustomProduct" TEXT,
+    "variantImage" TEXT,
+    "weightUnit" TEXT,
+    "taxCode" TEXT,
+    "cost" DOUBLE PRECISION,
+    "usIncluded" BOOLEAN,
+    "usPrice" DOUBLE PRECISION,
+    "usComparePrice" DOUBLE PRECISION,
+    "intlIncluded" BOOLEAN NOT NULL,
+    "intlPrice" DOUBLE PRECISION,
+    "intlComparePrice" DOUBLE PRECISION,
+    "status" TEXT,
+
+    CONSTRAINT "Product_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_email_key" ON "public"."User"("email");

@@ -1,0 +1,250 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPER_ADMIN
+  PRODUCT_MANAGER
+  SUPPORT_AGENT
+}
+
+enum OrderStatus {
+  pending
+  completed
+  cancelled
+  refunded
+}
+
+model AdminUser {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  password      String
+  name          String
+  profilePhoto  String?
+  firstName     String?
+  lastName      String?
+  country       String?
+  streetAddress String?
+  city          String?
+  state         String?
+  postalCode    String?
+  role          Role
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  lastLoginAt   DateTime?
+  isActive      Boolean   @default(true)
+}
+
+model User {
+  id                         String    @id @default(uuid())
+  email                      String    @unique
+  password                   String
+  name                       String
+  phone                      String?
+  emailVerified              Boolean   @default(false)
+  phoneVerified              Boolean   @default(false)
+  verifiedAt                 DateTime?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+  verificationToken          String?
+  verificationTokenExpiresAt DateTime?
+  resetPasswordOtp           String?
+  resetPasswordOtpExpiresAt  DateTime?
+  profilePic                 String?
+  dob                        DateTime?
+  gender                     String?
+  address                    Json?
+  preferredLanguage          String?
+  ipAddress                  String?
+  isBlocked                  Boolean   @default(false) // Added for block/unblock
+
+  Cart  Cart[]
+  Order Order[]
+}
+
+model Product {
+  id                  Int      @id @default(autoincrement())
+  handle              String?
+  title               String?
+  body                String?
+  vendor              String?
+  category            String?
+  type                String?
+  tags                String?
+  published           Boolean?
+  options             Json?
+  sku                 String?
+  grams               Int?
+  inventoryTracker    String?
+  inventoryQty        Int?     @default(0)
+  inventoryPolicy     String?
+  fulfillmentService  String?
+  price               Float?
+  comparePrice        Float?
+  requiresShipping    Boolean?
+  taxable             Boolean?
+  barcode             String?
+  imageSrc            Json?
+  imageAlt            String?
+  giftCard            Boolean?
+  seoTitle            String?
+  seoDescription      String?
+  googleCategory      String?
+  googleGender        String?
+  googleAgeGroup      String?
+  googleMPN           String?
+  googleCondition     String?
+  googleCustomProduct String?
+  variantImage        String?
+  weightUnit          String?
+  taxCode             String?
+  cost                Float?
+  usIncluded          Boolean?
+  usPrice             Float?
+  usComparePrice      Float?
+  intlIncluded        Boolean
+  intlPrice           Float?
+  intlComparePrice    Float?
+  status              String?
+
+  CartItem     CartItem[]
+  OrderItem    OrderItem[]
+  OrderProduct OrderProduct[]
+}
+
+model Cart {
+  id        String     @id @default(uuid())
+  userId    String     @map("user_id")
+  user      User       @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime   @default(now()) @map("created_at")
+  updatedAt DateTime   @updatedAt @map("updated_at")
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String   @map("cart_id")
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  productId Int      @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([cartId, productId])
+  @@map("cart_items")
+}
+
+model Order {
+  id             String         @id @default(uuid())
+  orderNumber    String         @unique @default(uuid())
+  userId         String         @map("user_id")
+  user           User           @relation(fields: [userId], references: [id])
+  customerId     String? // For external customers
+  customerName   String
+  customerEmail  String
+  customerAvatar String?
+  dateTime       DateTime       @default(now())
+  itemCount      Int
+  totalAmount    Float
+  status         OrderStatus    @default(pending)
+  products       OrderProduct[]
+  history        OrderHistory[] // Add this relation
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+
+  // Order tracking information
+  consignmentNumber String?
+  receipt           String?
+  orderType         String? // e.g., "retail", "wholesale", "subscription"
+  courierName       String?
+
+  // Order lifecycle dates
+  dispatchedDate    DateTime? // When order was dispatched/shipped
+  arrivedDate       DateTime? // When order arrived at customer
+  returnedDate      DateTime? // When customer initiated return
+  returnReachedDate DateTime? // When returned item reached warehouse
+
+  // Shipping information
+  shippingFirstName  String?
+  shippingLastName   String?
+  shippingCompany    String?
+  shippingAddress    String?
+  shippingApartment  String?
+  shippingCity       String?
+  shippingCountry    String?
+  shippingState      String?
+  shippingPostalCode String?
+  shippingPhone      String?
+  shippingEmail      String?
+
+  // Payment information
+  paymentMethod     String?
+  paymentCardLast4  String?
+  paymentCardBrand  String?
+  razorpayOrderId   String?
+  razorpayPaymentId String?
+  OrderItem         OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderHistory {
+  id        String   @id @default(uuid())
+  orderId   String   @map("order_id")
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  event     String // e.g., "Order created", "Status changed to completed"
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("order_history")
+}
+
+model OrderProduct {
+  id         String   @id @default(uuid())
+  orderId    String   @map("order_id")
+  order      Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId  Int      @map("product_id")
+  product    Product  @relation(fields: [productId], references: [id])
+  name       String // Store product name at time of order
+  sku        String // Store SKU at time of order
+  image      String // Store image URL at time of order
+  quantity   Int      @default(1)
+  unitPrice  Float // Store unit price at time of order
+  totalPrice Float // Store total price at time of order
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("order_products")
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String   @map("order_id")
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int      @map("product_id")
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int      @default(1)
+  price     Float
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("order_items")
+}
+
+model VerificationAttempt {
+  id        String   @id @default(uuid())
+  email     String
+  type      String
+  createdAt DateTime @default(now())
+  expiresAt DateTime @default(now())
+
+  @@index([email, type])
+}
